@@ -6,15 +6,15 @@ spec:
   affinity:
     nodeAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
+      - weight: 1
+        preference:
+          matchExpressions:
           - key: project
             operator: In
             values:
-            - roboshop
-
-                
+            - roboshop         
   containers:
   - name: nginx
     image: nginx
     imagePullPolicy: IfNotPresent
+
