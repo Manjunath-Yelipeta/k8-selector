@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-tolerance
+  name: nginx-tolerance1
   labels:
     env: test
 spec:
@@ -13,4 +13,4 @@ spec:
     - key: "name"
       operator: "Equal"
       value: "sri"
-      
+      effect: "NoExecute"
