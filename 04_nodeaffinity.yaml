@@ -1,20 +1,35 @@
-apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx
+  name: demo-node-affinity
 spec:
   affinity:
     nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        preference:
-          matchExpressions:
-          - key: project
+      # Hard rule: The pod MUST be scheduled on a node with environment=production
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.kubernetes.io/zone
             operator: In
             values:
-            - roboshopp        
+            -  us-east-1a
+               us-east-1c
+      # Soft rule: The pod PREFERS a node with disktype=ssd, giving it a weight score of 50
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 50
+        preference:
+          matchExpressions:
+          - key: topology.kubernetes.io/zone
+            operator: In
+            values:
+            - us-east-1a
+      - weight: 100
+        preference:
+          matchExpressions:
+          - key: topology.kubernetes.io/zone
+            operator: In
+            values:
+            - us-east-1c
+
   containers:
   - name: nginx
-    image: nginx
-    imagePullPolicy: IfNotPresent
-
+    image: nginx:latest
